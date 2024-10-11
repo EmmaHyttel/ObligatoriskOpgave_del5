@@ -30,12 +30,20 @@ public class ServerWithJson
                 {
                     var json = streamReader.ReadLine();
                     var command = JsonSerializer.Deserialize<Command>(json);
+                    var result = "";
 
                     switch (command?.Operation)
                     {
                         case OperationEnum.Random:
-                            var result = $"The result is: {Operations.RandomNumbers(command.Numbers)}";
-                            streamWriter.WriteLine(result);
+                            result = $"The result is: {Operations.RandomNumbers(command.Numbers)}";
+                            break;
+
+                        case OperationEnum.Add:
+                            result = $"The result is: {Operations.AddNumbers(command.Numbers)}";
+                            break;
+
+                        case OperationEnum.Subtract:
+                            result = $"The result is: {Operations.SubtractNumbers(command.Numbers)}";
                             break;
 
                         case OperationEnum.CloseConnection:
@@ -46,6 +54,7 @@ public class ServerWithJson
                             streamWriter.WriteLine("No valid command chosen");
                             break;
                     }
+                    streamWriter.WriteLine(result);
                 }
             });
         }
